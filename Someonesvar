@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="index.js"></script>
+  </body>
+</html>
+<script>
+  let givenProfile = "";
+  let profileName = "";
+  let profileId = "";
+  let profileLink = "";
+  let profileRepos = "";
+ 
+  function renderPage() {
+    document.getElementById("app").innerHTML = `
+  <div>
+    <h1>Github profile viewer</h1>
+    <p>Please enter profile name: </p>
+    <input />
+    <div class="content">
+      <h1 id="name">Name: ${profileName}</hi>
+      <p id="id">Id: ${profileId}</p>
+      <p id="repos">Public repos: ${profileRepos}</p>
+        
+      <a href="${profileLink}" target="_blank">Link</a>
+    </div>
+  </div>
+  `;
+  }
+  renderPage();
+ 
+  let fetchProfile = async () => {
+    let fetchedData;
+ 
+    await fetch(`https://api.github.com/users/${givenProfile}`)
+      .then((response) => response.json())
+      .then((data) => (fetchedData = data));
+ 
+    profileName = fetchedData.login;
+    profileId = fetchedData.id;
+    profileLink = fetchedData.html_url;
+    profileRepos = fetchedData.public_repos;
+    renderPage();
+  };
+ 
+  function updateValue(e) {
+    givenProfile = e.target.value;
+    fetchProfile();
+  }
+ 
+  const input = document.querySelector("input");
+  input.addEventListener("change", updateValue);
+</script>
