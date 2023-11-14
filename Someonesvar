@@ -39,7 +39,10 @@ renderPage();
 let fetchProfile = async () => {
   let fetchedData;
 
-  await fetch(`https://api.github.com/users/${givenProfile}`)
+  await fetch(`https://api.github.com/users/${givenProfile}`,{headers:{
+    'Autorization':'Bearer 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',
+    'Content-Type':'application/json',
+    },})
     .then((response) => response.json())
     .then((data) => (fetchedData = data));
 
